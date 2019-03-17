@@ -7,6 +7,32 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        
+        <TabControl>
+            <TabItem Header="Task 1">
+            <Grid>
+                <TextBlock Text="Tu piszemy xaml"/>
+            </Grid>
+            </TabItem>
+            <TabItem Header="Task 2">
+                <Grid>
+                    
+                </Grid>
+            </TabItem>
+            <TabItem Header="Task 3">
+                <Grid>
+                    
+                </Grid>
+            </TabItem>
+            <TabItem Header="Task 4">
+                <Grid>
+                    
+                </Grid>
+            </TabItem>
+            <TabItem Header="Task 5">
+                <Grid>
+                    
+                </Grid>
+            </TabItem>
+        </TabControl>
     </Grid>
 </Window>
