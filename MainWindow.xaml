@@ -8,7 +8,7 @@
         Title="MainWindow" Height="450" Width="810">
     <Grid ShowGridLines="True">
         <TabControl>
-            <TabItem Header="Rail fence">
+            <TabItem Header="Zadanie 1">
                 <Grid ShowGridLines="False">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto"/>
@@ -41,9 +41,37 @@
                     <TextBlock Name="result2" Grid.Row="6" Grid.Column="2" TextAlignment="Center" VerticalAlignment="Center" FontSize="30" FontWeight="Bold" Margin="0.4,33.2,-1,33.2">Tekst</TextBlock>
                 </Grid>
             </TabItem>
-            <TabItem Header="Task 2">
+            <TabItem Header="Zadanie 2">
                 <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="29*"/>
+                        <ColumnDefinition Width="370*"/>
+                        <ColumnDefinition Width="399*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Grid.Row="0" FontSize="30" TextAlignment="Center" FontWeight="Bold" Grid.ColumnSpan="3" Margin="0,0,393.6,0">ALGORYTM KODUJĄCY</TextBlock>
+                    <TextBlock Grid.Column="2" FontSize="30" TextAlignment="Center" FontWeight="Bold" Margin="0.6,0,-1.4,0">ALGORYTM DEKODUJĄCY</TextBlock>
+                    <TextBlock Grid.Row="1" Grid.Column="0" Margin="10,10,9.4,9.4" FontSize="20" TextAlignment="Center" Grid.ColumnSpan="2">Wpisz słowo do zaszyfrowania</TextBlock>
+                    <TextBox Name="word21"  Grid.Row="2" Margin="9.428,9.6,60.4,10" Width="300" CharacterCasing="Upper" FontSize="18" Grid.Column="1"></TextBox>
+                    <TextBlock Grid.Row="3" FontSize="20" TextAlignment="Center" Margin="10,10,9.4,9.4" Grid.ColumnSpan="2">Sposób szyfrowania:</TextBlock>
+                    <TextBlock Grid.Row="4" FontSize="20" TextAlignment="Center" Margin="10,9.6,9.4,9.8" Grid.ColumnSpan="2">d = 5 key = 3-4-1-5-2</TextBlock>
+                    <Button Name="code2" Grid.Row="5" Margin="84.428,15.2,135.4,14.8" FontSize="20" Width="150" Grid.Column="1" Click="Code2_Click">Zakoduj</Button>
+                    <TextBlock Name="result21" Grid.Row="6" Grid.Column="0" TextAlignment="Center" VerticalAlignment="Center" FontSize="30" FontWeight="Bold" Margin="10,33.2,9.4,33.2" Grid.ColumnSpan="2">asdas</TextBlock>
 
+                    <TextBlock Grid.Row="1" Grid.Column="2" Margin="9.6,10,9.6,9.4" FontSize="20" TextAlignment="Center">Wpisz słowo do odszyfrowania</TextBlock>
+                    <TextBox Name="word22"  Grid.Row="2" Grid.Column="2" Margin="38.6,9.6,60.6,10" Width="300" CharacterCasing="Upper" FontSize="18"></TextBox>
+                    <TextBlock Grid.Row="3" Grid.Column="2" FontSize="20" TextAlignment="Center" Margin="9.6,10,9.6,9.4">Sposób szyfrowania:</TextBlock>
+                    <TextBlock Grid.Row="4" Grid.Column="2" FontSize="20" TextAlignment="Center" Margin="9.6,9.6,9.6,9.8">d = 5 key = 3-4-1-5-2</TextBlock>
+                    <Button Name="decode2" Grid.Row="5" Grid.Column="2" Margin="113.6,15.2,135.6,14.8" FontSize="20" Width="150" Click="Decode2_Click">Odszyfruj</Button>
+                    <TextBlock Name="result22" Grid.Row="6" Grid.Column="2" TextAlignment="Center" VerticalAlignment="Center" FontSize="30" FontWeight="Bold" Margin="9.6,33.2">asdas</TextBlock>
                 </Grid>
             </TabItem>
             <TabItem Header="Task 3">
