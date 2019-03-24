@@ -395,7 +395,7 @@ namespace Cryptographics
         }
         //Task 4 
 
-        private int K1, K2,N;
+        private int K1, K0, N =21, fi=12;
         char[] alphabet = new char[21];
         static bool IsPrime(int n)
         {
@@ -407,18 +407,7 @@ namespace Cryptographics
 
             return false;
         }
-        private void N_TextChanged(object sender, TextChangedEventArgs e)
-        {           
-            if (n.Text == "")
-            {
-                N = 0;
-            }
-            else
-            {
-                N = int.Parse(n.Text);
-            }     
-        }
-
+        
         private void K1_TextChanged(object sender, TextChangedEventArgs e)
         {
             int model;
@@ -442,18 +431,29 @@ namespace Cryptographics
                 MessageBox.Show(text, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             } 
         }
-        private void NBack_TextChanged(object sender, TextChangedEventArgs e)
+        private void K0_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (nBack.Text == "")
+            int model;
+            if (k0.Text == "")
             {
-                N = 0;
+                model = 0;
             }
             else
             {
-                N = int.Parse(nBack.Text);
+                model = int.Parse(k0.Text);
+            }
+
+            if (IsPrime(model))
+            {
+                K0 = model;
+            }
+            else
+            {
+                k0.Clear();
+                string text = "K2 musi być liczbą pierwszą!";
+                MessageBox.Show(text, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-
         private void K1Back_TextChanged(object sender, TextChangedEventArgs e)
         {
             int model;
@@ -477,6 +477,30 @@ namespace Cryptographics
                 MessageBox.Show(text, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+        private void K0Back_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            int model;
+            if (k0Back.Text == "")
+            {
+                model = 0;
+            }
+            else
+            {
+                model = int.Parse(k0Back.Text);
+            }
+
+            if (IsPrime(model))
+            {
+                K0 = model;
+            }
+            else
+
+            {
+                k0Back.Clear();
+                string text = "K2 musi być liczbą pierwszą!";
+                MessageBox.Show(text, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
 
         private void CaesarInit()
         {
@@ -494,7 +518,7 @@ namespace Cryptographics
             {
                 if (letter == alphabet[i])
                 {
-                    int j = i + K1;
+                    int j = i * K1 + K0;
                     int r = j % N;
 
                     return alphabet[r];
@@ -509,7 +533,9 @@ namespace Cryptographics
             {
                 if (letter == alphabet[i])
                 {
-                    int j = i + (N - K1);
+                    /* int p = (int)Math.Pow(K1, fi - 1);
+                     int j = (i + (N - K0)) * p;*/
+                    int j = (i - K0) / K1;
                     int r = j % N;
 
                     return alphabet[r];
