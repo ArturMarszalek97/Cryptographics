@@ -442,6 +442,41 @@ namespace Cryptographics
                 MessageBox.Show(text, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             } 
         }
+        private void NBack_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (nBack.Text == "")
+            {
+                N = 0;
+            }
+            else
+            {
+                N = int.Parse(nBack.Text);
+            }
+        }
+
+        private void K1Back_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            int model;
+            if (k1Back.Text == "")
+            {
+                model = 0;
+            }
+            else
+            {
+                model = int.Parse(k1Back.Text);
+            }
+
+            if (IsPrime(model))
+            {
+                K1 = model;
+            }
+            else
+            {
+                k1Back.Clear();
+                string text = "K1 musi być liczbą pierwszą!";
+                MessageBox.Show(text, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
 
         private void CaesarInit()
         {
@@ -467,6 +502,21 @@ namespace Cryptographics
             }
             return '.';
         }
+        private char FindLetterInAlphabetBack(char letter)
+        {
+            CaesarInit();
+            for (int i = 0; i < N; i++)
+            {
+                if (letter == alphabet[i])
+                {
+                    int j = i + (N - K1);
+                    int r = j % N;
+
+                    return alphabet[r];
+                }
+            }
+            return '.';
+        }
 
         private void CaesarCodeClick(Object sender, RoutedEventArgs e )
         {
@@ -478,9 +528,18 @@ namespace Cryptographics
             }
             string result = new string(cryptogramArray);
             cryptogram.Text = result;
+        }        
+        private void CaesarDecodeClick(Object sender, RoutedEventArgs e)
+        {
+            char[] plainTextArray = plaintextBack.Text.ToArray();
+            char[] cryptogramArray = new char[plainTextArray.Length];
+            for (int i = 0; i < plainTextArray.Length; i++)
+            {
+                cryptogramArray[i] = FindLetterInAlphabetBack(plainTextArray[i]);
+            }
+            string result = new string(cryptogramArray);
+            cryptogramBack.Text = result;
         }
-
-
 
     }
 }
