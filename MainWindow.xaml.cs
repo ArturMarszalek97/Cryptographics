@@ -1,17 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Cryptographics
 {
@@ -20,13 +11,14 @@ namespace Cryptographics
     /// </summary>
     public partial class MainWindow : Window
     {
+        
         public MainWindow()
         {
             InitializeComponent();
-            init();
+            Init();
         }
 
-        public void init()
+        public void Init()
         {
             result1.Text = " ";
             result2.Text = " ";
@@ -42,7 +34,7 @@ namespace Cryptographics
             return table;
         }
 
-        public string[,] wypelnienie(string[,] tab, string content, int key)
+        public string[,] Wypelnienie(string[,] tab, string content, int key)
         {
             string[,] table = tab;
             string word = content;
@@ -115,7 +107,7 @@ namespace Cryptographics
                 int Key = Convert.ToInt32(key.Text);
 
                 string[,] table = CreateTwoDimensionalTable(Key, Word.Length);
-                table = wypelnienie(table, Word, Key);
+                table = Wypelnienie(table, Word, Key);
 
                 string result = Result(table, Key, Word.Length);
 
@@ -129,7 +121,7 @@ namespace Cryptographics
             
         }
 
-        public string[,] changes(string[,] array, int row, int columns, string text)
+        public string[,] Changes(string[,] array, int row, int columns, string text)
         {
             string[,] table = array;
             string word = text;
@@ -200,9 +192,9 @@ namespace Cryptographics
                 int key = Convert.ToInt32(key2.Text);
 
                 string[,] table = CreateTwoDimensionalTable(key, text.Length);
-                table = wypelnienie(table, text, key);
+                table = Wypelnienie(table, text, key);
 
-                table = changes(table, key, text.Length, text);
+                table = Changes(table, key, text.Length, text);
 
                 string result = Result2(table, key, text.Length, text);
 
@@ -217,7 +209,7 @@ namespace Cryptographics
 
         // TASK 2
 
-        public int[] initKey(int[] tab)
+        public int[] InitKey(int[] tab)
         {
             int[] array = tab;
 
@@ -230,7 +222,7 @@ namespace Cryptographics
             return array;
         }
 
-        public string[,] addValues(string[,] tab, string text, int rows, int columns)
+        public string[,] AddValues(string[,] tab, string text, int rows, int columns)
         {
             string[,] array = tab;
             string word = text;
@@ -282,14 +274,14 @@ namespace Cryptographics
                 string text = word21.Text;
                 int[] array = new int[5];
 
-                array = initKey(array);
+                array = InitKey(array);
 
                 double row = (double)text.Length / 5;
                 int rows = Convert.ToInt32(Math.Ceiling(row));
 
                 string[,] tab = CreateTwoDimensionalTable(rows, 5);
 
-                tab = addValues(tab, text, rows, 5);
+                tab = AddValues(tab, text, rows, 5);
 
                 string result = ResultTask2(tab, array, rows, 5);
 
@@ -385,7 +377,7 @@ namespace Cryptographics
                 string text = word22.Text;
                 int[] array = new int[5];
 
-                array = initKey(array);
+                array = InitKey(array);
 
                 double row = (double)text.Length / 5;
                 int rows = Convert.ToInt32(Math.Ceiling(row));
@@ -401,5 +393,94 @@ namespace Cryptographics
                 MessageBox.Show(text, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+        //Task 4 
+
+        private int K1, K2,N;
+        char[] alphabet = new char[21];
+        static bool IsPrime(int n)
+        {
+            if (n > 1)
+            {
+                return Enumerable.Range(1, n).Where(x => n % x == 0)
+                                 .SequenceEqual(new[] { 1, n });
+            }
+
+            return false;
+        }
+        private void N_TextChanged(object sender, TextChangedEventArgs e)
+        {           
+            if (n.Text == "")
+            {
+                N = 0;
+            }
+            else
+            {
+                N = int.Parse(n.Text);
+            }     
+        }
+
+        private void K1_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            int model;
+            if (k1.Text == "")
+            {
+                model = 0;
+            }
+            else
+            {
+                model = int.Parse(k1.Text);
+            }
+
+            if(IsPrime(model))
+             {
+                K1 = model;               
+            }
+            else
+            {
+                k1.Clear();
+                string text = "K1 musi być liczbą pierwszą!";
+                MessageBox.Show(text, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            } 
+        }
+
+        private void CaesarInit()
+        {
+            char letter = 'A';
+            for (int i = 0; i < N; i++)
+            {
+                alphabet[i] = letter++;              
+            }
+          
+        }
+        private char FindLetterInAlphabet(char letter)
+        {
+            CaesarInit();
+            for (int i = 0; i < N; i++)
+            {
+                if (letter == alphabet[i])
+                {
+                    int j = i + K1;
+                    int r = j % N;
+
+                    return alphabet[r];
+                }              
+            }
+            return '.';
+        }
+
+        private void CaesarCodeClick(Object sender, RoutedEventArgs e )
+        {
+            char[] plainTextArray =  plaintext.Text.ToArray();
+            char[] cryptogramArray = new char[plainTextArray.Length];
+            for (int i=0; i <plainTextArray.Length; i++)
+            {
+                cryptogramArray[i] = FindLetterInAlphabet(plainTextArray[i]);
+            }
+            string result = new string(cryptogramArray);
+            cryptogram.Text = result;
+        }
+
+
+
     }
 }
