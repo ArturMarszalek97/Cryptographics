@@ -562,10 +562,10 @@ namespace Cryptographics
         {
             string k = keyV.Text.ToString();
             string t = plaintextV.Text.ToString();
-            cryptogramV.Text = Vigenere(t, k, true);
+            cryptogramV.Text = Vigenere(t, k);
 
         }
-        private string Vigenere(string Text, string Key, bool Crypt)
+        private string Vigenere(string Text, string Key)
         {
             int x;
             int y;
@@ -599,7 +599,47 @@ namespace Cryptographics
 
             return Results;
         }
-        
 
+        private void VigenereInitBack(Object sender, RoutedEventArgs e)
+        {
+            string k = keyVBack.Text.ToString();
+            string t = plaintextBackV.Text.ToString();
+            cryptogramVBack.Text = VigenereBack(t, k);
+
+        }
+        private string VigenereBack(string Text, string Key)
+        {
+            int z;
+            int k;
+            string NewKey = string.Empty;
+            string Results = string.Empty;
+            string AvailableCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            int t;
+            int[,] tekst = new int[26, 26];
+
+            NewKey = Key;
+            if (Text.Length > Key.Length)
+            {
+                for (int i = 0; i < Text.Length / Key.Length; i++)
+                {
+                    NewKey += Key;
+                }
+            }
+            Key = NewKey;
+
+            for (int i = 0; i < Text.Length; i++)
+            {
+                z = AvailableCharacters.IndexOf(Text[i]);
+                k = AvailableCharacters.IndexOf(Key[i]);
+
+                t = (z-k);
+                if(t < 0)
+                {
+                   t = 26 + t;
+                }
+                Results += AvailableCharacters[t];
+            }
+            return Results;
+        }
     }
 }

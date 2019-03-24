@@ -166,9 +166,9 @@
                     <TextBox  Name="plaintextBackV" Grid.Row="3" Grid.Column="2" Margin="38.6,9.6,60.6,10" Width="300" CharacterCasing="Upper" FontSize="18"></TextBox>
                     <DockPanel  Grid.Row="5" Grid.Column ="2">
                         <TextBlock  FontSize="20" TextAlignment="Center" Margin="10,10,9.4,9.4" Grid.ColumnSpan="2">Klucz:</TextBlock>
-                        <TextBox   Name="keyVBack" Margin="3,3,3,3.4" DockPanel.Dock="Right" Width="203" ></TextBox>
+                        <TextBox   Name="keyVBack" CharacterCasing="Upper" Margin="3,3,3,3.4" DockPanel.Dock="Right" Width="203" ></TextBox>
                     </DockPanel>
-                    <Button  Grid.Row="6" Grid.Column="2" Margin="113.6,15.2,135.6,14.8" FontSize="20" Width="150" Click="CaesarDecodeClick">Odszyfruj</Button>
+                    <Button  Grid.Row="6" Grid.Column="2" Margin="113.6,15.2,135.6,14.8" FontSize="20" Width="150" Click="VigenereInitBack">Odszyfruj</Button>
                     <TextBlock Name="cryptogramVBack" Grid.Row="7" Grid.Column="2" TextAlignment="Center" VerticalAlignment="Center" FontSize="30" FontWeight="Bold" Margin="9.6,33.2">asdas</TextBlock>
 
                 </Grid>
