@@ -10,14 +10,12 @@ namespace Cryptographics
     /// Logika interakcji dla klasy MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
-    {
-        
+    {        
         public MainWindow()
         {
             InitializeComponent();
             Init();
         }
-
         public void Init()
         {
             result1.Text = " ";
@@ -33,7 +31,6 @@ namespace Cryptographics
 
             return table;
         }
-
         public string[,] Wypelnienie(string[,] tab, string content, int key)
         {
             string[,] table = tab;
@@ -79,7 +76,6 @@ namespace Cryptographics
 
             return table;
         }
-
         public string Result(string[,] tab, int row, int columns)
         {
             string[,] array = tab;
@@ -120,7 +116,6 @@ namespace Cryptographics
             }
             
         }
-
         public string[,] Changes(string[,] array, int row, int columns, string text)
         {
             string[,] table = array;
@@ -141,7 +136,6 @@ namespace Cryptographics
 
             return table;
         }
-
         public string Result2(string[,] array, int rows, int columns, string text)
         {
             string result = "";
@@ -182,7 +176,6 @@ namespace Cryptographics
 
             return result;
         }
-
         private void Decode_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -221,7 +214,6 @@ namespace Cryptographics
 
             return array;
         }
-
         public string[,] AddValues(string[,] tab, string text, int rows, int columns)
         {
             string[,] array = tab;
@@ -251,7 +243,6 @@ namespace Cryptographics
 
             return array;
         }
-
         public string ResultTask2(string[,] tab, int[] key, int rows, int columns)
         {
             string result = "";
@@ -266,7 +257,6 @@ namespace Cryptographics
 
             return result;
         }
-
         private void Code2_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -294,7 +284,6 @@ namespace Cryptographics
             }
             
         }
-
         public string Result2Task2(string word, int[] tab, int cyc)
         {
             string result = "";
@@ -369,7 +358,6 @@ namespace Cryptographics
 
             return result;
         }
-
         private void Decode2_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -393,9 +381,11 @@ namespace Cryptographics
                 MessageBox.Show(text, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
         //Task 4 
 
-        private int K1, K0, N =21, fi=12;
+        private int K1, K0, N = 21;
+        //fi=12;
         char[] alphabet = new char[21];
         static bool IsPrime(int n)
         {
@@ -566,6 +556,50 @@ namespace Cryptographics
             string result = new string(cryptogramArray);
             cryptogramBack.Text = result;
         }
+
+        //TASK 5
+        private void VigenereInit(Object sender, RoutedEventArgs e)
+        {
+            string k = keyV.Text.ToString();
+            string t = plaintextV.Text.ToString();
+            cryptogramV.Text = Vigenere(t, k, true);
+
+        }
+        private string Vigenere(string Text, string Key, bool Crypt)
+        {
+            int x;
+            int y;
+            string NewKey = string.Empty;
+            string Results = string.Empty;
+            string AvailableCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+            int [,] znak = new int[26, 26];
+
+            NewKey = Key;
+            if (Text.Length > Key.Length)
+            {
+                for (int i = 0; i < Text.Length / Key.Length; i++)
+                {
+                    NewKey += Key;
+                }
+            }
+            Key = NewKey;
+
+            for (int i = 0; i < Text.Length; i++)
+            {
+
+                x = AvailableCharacters.IndexOf(Text[i]);
+                y = AvailableCharacters.IndexOf(Key[i]);
+                
+                znak[x, y] = ((0 + x) + y) % 26;
+
+                Results += AvailableCharacters[znak[x, y]];
+              
+            }
+
+            return Results;
+        }
+        
 
     }
 }

@@ -135,7 +135,41 @@
                 </Grid>
             </TabItem>
             <TabItem Header="Task 5">
-                <Grid>
+                <Grid >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="29*"/>
+                        <ColumnDefinition Width="370*"/>
+                        <ColumnDefinition Width="399*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" FontSize="30" Margin ="10" TextAlignment="Center" FontWeight="Bold">Szyfrowanie Vigenere </TextBlock>
+                    <TextBlock Grid.Column="0" Grid.Row="1" FontSize="30" TextAlignment="Center" FontWeight="Bold" Grid.ColumnSpan="3" Margin="0,0,393.6,0">ALGORYTM KODUJĄCY</TextBlock>
+                    <TextBlock Grid.Column="2"  Grid.Row="1" FontSize="30" TextAlignment="Center" FontWeight="Bold" Margin="0.6,0,-1.4,0">ALGORYTM DEKODUJĄCY</TextBlock>
+                    <TextBlock Grid.Row="2" Grid.Column="0" Margin="10,10,9.4,9.4" FontSize="20" TextAlignment="Center" Grid.ColumnSpan="2">Wpisz słowo do zaszyfrowania</TextBlock>
+                    <TextBox Name="plaintextV" Grid.Row="3" Margin="9.428,9.6,60.4,10" Width="300" CharacterCasing="Upper" FontSize="20" Grid.Column="1"></TextBox>
+                    <DockPanel  Grid.Row="5" Grid.Column ="1">
+                        <TextBlock  FontSize="20" TextAlignment="Center" Margin="10,10,9.4,9.4" Grid.ColumnSpan="2">Klucz:</TextBlock>
+                        <TextBox  Name="keyV" Margin="3,3,3,3.4" DockPanel.Dock="Right" CharacterCasing="Upper" Width="203" ></TextBox>
+                    </DockPanel>
+                    <Button  Grid.Row="6" Margin="84.428,15.2,135.4,14.8" FontSize="20" Width="150" Grid.Column="1" Click="VigenereInit">Zakoduj</Button>
+                    <TextBlock Name="cryptogramV" Grid.Row="7" Grid.Column="0" TextAlignment="Center" VerticalAlignment="Center" FontSize="30" FontWeight="Bold" Margin="10,33.2,9.4,33.2" Grid.ColumnSpan="2">asdas</TextBlock>
+                    <TextBlock Grid.Row="2" Grid.Column="2" Margin="9.6,10,9.6,9.4" FontSize="20" TextAlignment="Center">Wpisz słowo do odszyfrowania</TextBlock>
+                    <TextBox  Name="plaintextBackV" Grid.Row="3" Grid.Column="2" Margin="38.6,9.6,60.6,10" Width="300" CharacterCasing="Upper" FontSize="18"></TextBox>
+                    <DockPanel  Grid.Row="5" Grid.Column ="2">
+                        <TextBlock  FontSize="20" TextAlignment="Center" Margin="10,10,9.4,9.4" Grid.ColumnSpan="2">Klucz:</TextBlock>
+                        <TextBox   Name="keyVBack" Margin="3,3,3,3.4" DockPanel.Dock="Right" Width="203" ></TextBox>
+                    </DockPanel>
+                    <Button  Grid.Row="6" Grid.Column="2" Margin="113.6,15.2,135.6,14.8" FontSize="20" Width="150" Click="CaesarDecodeClick">Odszyfruj</Button>
+                    <TextBlock Name="cryptogramVBack" Grid.Row="7" Grid.Column="2" TextAlignment="Center" VerticalAlignment="Center" FontSize="30" FontWeight="Bold" Margin="9.6,33.2">asdas</TextBlock>
 
                 </Grid>
             </TabItem>
