@@ -7,7 +7,11 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="550" Width="900">
     <Grid ShowGridLines="True">
-        <TabControl >
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0*"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <TabControl Grid.ColumnSpan="2" Margin="0,0,-0.4,-0.2" >
             <TabItem Header="Zadanie 1">
                 <Grid ShowGridLines="False">
                     <Grid.RowDefinitions>
@@ -232,6 +236,49 @@
                     </DockPanel>
                     <Button  Grid.Row="6" Grid.Column="2" Margin="113.6,15.2,135.6,14.8" FontSize="20" Width="150" Click="VigenereInitBack">Odszyfruj</Button>
                     <TextBlock Name="cryptogramVBack" Grid.Row="7" Grid.Column="2" TextAlignment="Center" VerticalAlignment="Center" FontSize="30" FontWeight="Bold" Margin="9.6,33.2">asdas</TextBlock>
+
+                </Grid>
+            </TabItem>
+            <TabItem Header="CipherText">
+                <Grid >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="29*"/>
+                        <ColumnDefinition Width="370*"/>
+                        <ColumnDefinition Width="399*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" FontSize="30" Margin ="10" TextAlignment="Center" FontWeight="Bold">Ciphertext autokey</TextBlock>
+                    <TextBlock Grid.Column="0" Grid.Row="1" FontSize="30" TextAlignment="Center" FontWeight="Bold" Grid.ColumnSpan="3" Margin="0,0,393.6,0">ALGORYTM KODUJĄCY</TextBlock>
+                    <TextBlock Grid.Column="2"  Grid.Row="1" FontSize="30" TextAlignment="Center" FontWeight="Bold" Margin="0.6,0,-1.4,0">ALGORYTM DEKODUJĄCY</TextBlock>
+                    <Button Grid.Row="2" Grid.Column="1" Name="btnOpenFile" Click="BtnOpenFile_Click" Margin="5">Wybierz plik</Button>
+                    <TextBlock Name="plainTextCh" Grid.Row="3" Grid.Column="1" Margin="5"></TextBlock>
+                    <Button Grid.Row="4" Grid.Column="1" Margin="5" Click="GenerateFunction">Wygeneruj wielomian</Button>
+                    <TextBlock Name="wielomian" Grid.Row="5" Grid.Column="1" Margin="5"></TextBlock>
+
+                    <Button Grid.Row="6" Grid.Column="1" Margin="5" Click="Ciphertext">Zaszyfruj</Button>
+                    <TextBlock Name="s0" Grid.Row="7" Grid.Column="1" Margin="5"></TextBlock>
+                    <TextBlock Name="s1" Grid.Row="8" Grid.Column="1" Margin="5"></TextBlock>
+                    <TextBlock Name="s2" Grid.Row="9" Grid.Column="1" Margin="5"></TextBlock>
+                    <TextBlock Name="s3" Grid.Row="10" Grid.Column="1" Margin="5"></TextBlock>
+                    <TextBlock Name="ciphertext" Grid.Row="11" Grid.Column="1" Margin="5"></TextBlock>
+
+                    <TextBlock Name="plainTextChBack" Grid.Row="2" Grid.Column="2" Margin="15,5"></TextBlock>
+                    <Button Grid.Row="3" Grid.Column="2"  Click="CipherTextBack" Margin="15,5">Odszywruj</Button>
+                    <TextBlock Name="ciphertextBack" Grid.Row="3" Grid.Column="2" Margin="15,5"></TextBlock>
 
                 </Grid>
             </TabItem>

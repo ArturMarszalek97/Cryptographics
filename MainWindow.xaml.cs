@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -16,6 +18,7 @@ namespace Cryptographics
             InitializeComponent();
             Init();
         }
+        #region zad 1
         public void Init()
         {
             result1.Text = " ";
@@ -211,7 +214,8 @@ namespace Cryptographics
                 MessageBox.Show(text, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-
+        #endregion
+        #region zad 2
         // TASK 2
 
         public int[] InitKey(int[] tab)
@@ -394,7 +398,8 @@ namespace Cryptographics
                 MessageBox.Show(text, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-
+        #endregion
+        #region zad 3 
         // TASK 3 2b
 
         private void Code31_Click(object sender, RoutedEventArgs e)
@@ -816,6 +821,8 @@ namespace Cryptographics
 
             result32c.Text = result;
         }
+        #endregion
+        #region zad 4
 
         //Task 4 
 
@@ -991,7 +998,8 @@ namespace Cryptographics
             string result = new string(cryptogramArray);
             cryptogramBack.Text = result;
         }
-
+        #endregion
+        #region zad 5
         //TASK 5
         private void VigenereInit(Object sender, RoutedEventArgs e)
         {
@@ -1076,5 +1084,171 @@ namespace Cryptographics
             }
             return Results;
         }
+        #endregion
+
+        #region CipherText
+        // CipherText
+
+        //każdy string to jeden znak 
+        public string[] binaryFile;
+        public int[] power = new int[4];
+        public int[] resultTableCiphertext;
+        
+
+        private byte XOR (byte p , byte q)
+        {
+            if (p == 0)
+            {
+                if(q == 0) { return 0; }
+                else { return 1; }
+            }
+            else 
+            {
+                if (q == 0) { return 1; }
+                else  { return 0; }
+            }
+        }
+
+        private void GenerateFunction(object sender, RoutedEventArgs e)
+        {
+            wielomian.Text = null;
+            
+            Random rand = new Random();
+            string textY;
+            for (int i = 0; i < 4; i++)
+            {
+                power[i] = rand.Next(0, 2);
+                if (i == 3)
+                {
+                    textY = power[i] + "x^" + i;
+                    wielomian.Text += textY;
+                }
+                else
+                {
+                    textY = power[i] + "x^" + i + " + ";
+                    wielomian.Text += textY;
+                }
+            }
+        }
+
+        private void BtnOpenFile_Click(object sender, RoutedEventArgs e)
+        {
+            byte[] bytes;
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            if (openFileDialog.ShowDialog() == true)
+            {
+                using (FileStream fs = new FileStream(openFileDialog.FileName, FileMode.Open, FileAccess.Read))
+                {
+                    // Create a byte array of file stream length
+                    bytes = System.IO.File.ReadAllBytes(openFileDialog.FileName);
+                    //Read block of bytes from stream into the byte array
+                    fs.Read(bytes, 0, System.Convert.ToInt32(fs.Length));
+                    //Close the File Stream
+                    fs.Close();
+                }
+                binaryFile = new string[bytes.Length];
+                for (int i = 0; i < bytes.Length; i++)
+                {
+                    int b = bytes[i];
+                    binaryFile[i] = Convert.ToString(b, 2);
+                }
+
+                string plaintext = string.Join(" ", binaryFile);
+                plainTextCh.Text = "Plain text: " + plaintext;
+            }
+        }
+
+        private void Ciphertext(object sender, RoutedEventArgs e)
+        {          
+            int resultSizeModel = 0;            
+            int[] STable = new int[4];
+            int index = 0;
+
+            Random rand = new Random();
+            for (int i = 0; i < 4; i++)
+            {
+                STable[i] = rand.Next(0, 2);
+            }
+
+            s0.Text = "S0: " + STable[0].ToString();
+            s1.Text = "S1: " + STable[1].ToString();
+            s2.Text = "S2: " + STable[2].ToString();
+            s3.Text = "S3: " + STable[3].ToString();
+
+            for (int i = 0; i < binaryFile.Length; i++)
+            {
+                int modelSize = binaryFile[i].Length;
+                resultSizeModel += modelSize; 
+            }
+
+            int[] resultTable = new int[resultSizeModel];
+            
+            
+            //operacja 1
+            byte op1 = XOR(Convert.ToByte(STable[0]), Convert.ToByte(STable[3]));
+           
+            for (int i = 0; i < binaryFile.Length; i++)
+            {
+                string model = binaryFile[i];
+                int modelSize = binaryFile[i].Length;
+                int[] modelTable = new int[resultSizeModel];
+                int[] helpTable = new int[modelSize];
+
+
+                for (int j = 0; j < modelSize; j++)
+                {
+                    char[] tab = model.ToArray();
+                    for(int k = 0; k < tab.Length; k++)
+                    {
+                        if(tab[k] =='1') { modelTable[k] = 1; }
+                        else { modelTable[k] = 0; }
+                    }
+
+
+                    byte c = Convert.ToByte(modelTable[j]);
+                    //operacja 2
+                    byte op2 = XOR(c, op1);
+
+                    //operacja 3                    
+                    STable[3] = STable[2];
+                    STable[2] = STable[1];
+                    STable[1] = STable[0];
+                    STable[0] = op2;
+                          
+                    helpTable[j] = STable[3]; 
+                }
+
+             
+                if (i == 0)
+                {
+                    for(int j = 0; j < helpTable.Length; j++)
+                    {
+                        index = j;
+                        resultTable[j] = helpTable[j]; 
+                    }
+                }               
+                else
+                {
+                    for (long j = 0; j < helpTable.Length; j++)
+                    {                       
+                        resultTable[index +1] = helpTable[j];                        
+                        index++;
+                    }
+
+                }
+                string result = string.Join(" ", resultTable);
+                ciphertext.Text = "Wynik: " + result;
+
+                resultTableCiphertext = new int[resultTable.Length];
+                Array.Copy(resultTable, resultTableCiphertext,resultTable.Length);
+                string plaintTextback = string.Join(" ", resultTableCiphertext);
+                plainTextChBack.Text = "Plain Text back: " + plaintTextback;
+            }
+
+        }
+        #endregion
+
+
+
     }
 }
