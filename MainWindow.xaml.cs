@@ -1093,7 +1093,8 @@ namespace Cryptographics
         public string[] binaryFile;
         public int[] power = new int[4];
         public int[] resultTableCiphertext;
-        
+        int[] STableResult = new int[4];
+        public string plainTextb;
 
         private byte XOR (byte p , byte q)
         {
@@ -1153,7 +1154,8 @@ namespace Cryptographics
                     binaryFile[i] = Convert.ToString(b, 2);
                 }
 
-                string plaintext = string.Join(" ", binaryFile);
+                string plaintext = string.Join("", binaryFile);
+                plainTextb = plaintext;
                 plainTextCh.Text = "Plain text: " + plaintext;
             }
         }
@@ -1168,6 +1170,8 @@ namespace Cryptographics
             for (int i = 0; i < 4; i++)
             {
                 STable[i] = rand.Next(0, 2);
+                STableResult[i] = STable[i];
+
             }
 
             s0.Text = "S0: " + STable[0].ToString();
@@ -1245,7 +1249,34 @@ namespace Cryptographics
                 plainTextChBack.Text = "Plain Text back: " + plaintTextback;
             }
 
+
         }
+
+        private void CipherTextBack(object sender, RoutedEventArgs e)
+        {                       
+           int[] resultTable = new int[plainTextb.Length];
+
+            //operacja 1
+            byte op1 = XOR(Convert.ToByte(STableResult[0]), Convert.ToByte(STableResult[3]));
+            for (int i = 0; i < resultTableCiphertext.Length; i++)
+            { 
+                
+                byte c = Convert.ToByte(resultTableCiphertext[i]);
+                //operacja 2
+                byte op2 = XOR(c, op1);
+
+                //operacja 3                    
+                STableResult[3] = STableResult[2];
+                STableResult[2] = STableResult[1];
+                STableResult[1] = STableResult[0];
+                STableResult[0] = op2;
+
+                resultTable[i] = STableResult[3];
+            }
+            
+            string result = string.Join(" ", plainTextb);
+            ciphertextBack.Text = "Wynik: " + result;
+            }
         #endregion
 
 

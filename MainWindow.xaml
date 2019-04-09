@@ -265,7 +265,7 @@
                     <TextBlock Grid.Column="0" Grid.Row="1" FontSize="30" TextAlignment="Center" FontWeight="Bold" Grid.ColumnSpan="3" Margin="0,0,393.6,0">ALGORYTM KODUJĄCY</TextBlock>
                     <TextBlock Grid.Column="2"  Grid.Row="1" FontSize="30" TextAlignment="Center" FontWeight="Bold" Margin="0.6,0,-1.4,0">ALGORYTM DEKODUJĄCY</TextBlock>
                     <Button Grid.Row="2" Grid.Column="1" Name="btnOpenFile" Click="BtnOpenFile_Click" Margin="5">Wybierz plik</Button>
-                    <TextBlock Name="plainTextCh" Grid.Row="3" Grid.Column="1" Margin="5"></TextBlock>
+                    <TextBlock Name="plainTextCh" Grid.Row="3" Grid.Column="1" Margin="5" FontSize="16"/>
                     <Button Grid.Row="4" Grid.Column="1" Margin="5" Click="GenerateFunction">Wygeneruj wielomian</Button>
                     <TextBlock Name="wielomian" Grid.Row="5" Grid.Column="1" Margin="5"></TextBlock>
 
@@ -274,11 +274,12 @@
                     <TextBlock Name="s1" Grid.Row="8" Grid.Column="1" Margin="5"></TextBlock>
                     <TextBlock Name="s2" Grid.Row="9" Grid.Column="1" Margin="5"></TextBlock>
                     <TextBlock Name="s3" Grid.Row="10" Grid.Column="1" Margin="5"></TextBlock>
-                    <TextBlock Name="ciphertext" Grid.Row="11" Grid.Column="1" Margin="5"></TextBlock>
+                    <TextBlock Name="ciphertext" Grid.Row="11" Grid.Column="1" Margin="5"  FontSize="16"></TextBlock>
 
-                    <TextBlock Name="plainTextChBack" Grid.Row="2" Grid.Column="2" Margin="15,5"></TextBlock>
-                    <Button Grid.Row="3" Grid.Column="2"  Click="CipherTextBack" Margin="15,5">Odszywruj</Button>
-                    <TextBlock Name="ciphertextBack" Grid.Row="3" Grid.Column="2" Margin="15,5"></TextBlock>
+                    <TextBlock Name="plainTextChBack" Grid.Row="2" Grid.Column="2" Margin="15,5" FontSize="16"></TextBlock>
+                 
+                    <Button Grid.Row ="6" Grid.Column="2" Click="CipherTextBack" Margin="15,5">Odszywruj</Button>
+                    <TextBlock Name="ciphertextBack" Grid.Row="11" Grid.Column="2" Margin="15,5" FontSize="16"></TextBlock>
 
                 </Grid>
             </TabItem>
