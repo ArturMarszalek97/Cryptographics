@@ -173,6 +173,26 @@
 
                 </Grid>
             </TabItem>
+            <TabItem Header="LFSR">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="3*" />
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="3*" />
+                        <RowDefinition Height="3*" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="5*" />
+                        <ColumnDefinition Width="5*" />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.ColumnSpan="2" Grid.Row="0" VerticalAlignment="Center" Margin="10" FontSize="50" TextAlignment="Center" FontWeight="Bold">PODAJ POTĘGI PO PRZECINKU</TextBlock>
+                    <TextBlock Name="randomv" Grid.ColumnSpan="2" Grid.Row="1" VerticalAlignment="Center" Margin="10" FontSize="50" TextAlignment="Center">text</TextBlock>
+                    <TextBox Name="powers" Grid.ColumnSpan="2" Grid.Row="2" VerticalAlignment="Center" Margin="20" Height="50" FontSize="20"></TextBox>
+                    <Button Name="start" Grid.Row="3" Margin="20" FontSize="40" FontWeight="Bold" Click="Start_Click">START</Button>
+                    <Button Name="stop" Grid.Row="3" Grid.Column="1" Margin="20" FontSize="40" FontWeight="Bold" Click="Stop_Click">STOP</Button>
+                </Grid>
+            </TabItem>
 
         </TabControl>
     </Grid>

@@ -3,6 +3,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Collections.Generic;
+using System.Threading;
 
 namespace Cryptographics
 {
@@ -23,6 +25,8 @@ namespace Cryptographics
 
             result21.Text = " ";
             result22.Text = " ";
+
+            randomv.Text = " ";
         }
 
         public string[,] CreateTwoDimensionalTable(int rows, int columns)
@@ -640,6 +644,126 @@ namespace Cryptographics
                 Results += AvailableCharacters[t];
             }
             return Results;
+        }
+
+
+
+        // LFSR generator
+
+        bool status = true;
+        List<int> list = new List<int>();
+
+        private void Start_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                string data = powers.Text;
+
+                string[] data_without_commas = data.Split(',');
+
+                // find max value
+
+                int grain = int.Parse(data_without_commas[0]);
+                int k = 0;
+
+                int[] data_in_int = new int[data_without_commas.Length];
+
+                foreach (string o in data_without_commas)
+                {
+                    data_in_int[k] = int.Parse(o);
+                    k++;
+
+                    if (int.Parse(o) > grain)
+                    {
+                        grain = int.Parse(o);
+                    }
+                }
+
+                // new array with random values
+
+                string random_values = "";
+
+                int[] array = new int[grain];
+
+                Random random = new Random();
+
+                for (int i = 0; i < grain; i++)
+                {
+                    array[i] = random.Next(0, 2);
+                    random_values = random_values + array[i];
+                }
+
+                // show values in array
+
+                randomv.Text = "Wylosowany ciąg: " + random_values;
+
+                // shifts
+
+                int[] shifts = new int[grain];
+                shifts = array;
+                int sum = 0;
+                int result;
+                int[] help_array = new int[grain - 1];
+
+                double period = Math.Pow(2, grain) - 1;
+                double counter = 0;
+                bool start_loop = true;
+                int p = 0;
+
+                while (p < 50)
+                {
+                    p++;
+
+                    if (counter % period == 0)
+                    {
+                        counter = 0;
+                        shifts = array;
+                    }
+
+                    counter++;
+                    sum = 0;
+
+                    for (int i = 0; i < data_without_commas.Length; i++)
+                    {
+                        sum = sum + shifts[data_in_int[i] - 1];
+                    }
+
+                    result = sum % 2;
+
+                    list.Add(result);
+
+                    for (int i = 0; i < grain - 1; i++)
+                    {
+                        help_array[i] = shifts[i];
+                    }
+
+                    shifts[0] = result;
+
+                    for (int i = 1; i < grain; i++)
+                    {
+                        shifts[i] = help_array[i - 1];
+                    }
+                }
+            }
+            catch
+            {
+                MessageBox.Show("Wprowadzono niewłaściwe dane!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void Stop_Click(object sender, RoutedEventArgs e)
+        {
+            status = false;
+            string result = " ";
+
+            foreach(int o in list)
+            {
+                result = result + o.ToString();
+            }
+
+            MessageBox.Show(result, "Wynik", MessageBoxButton.OK, MessageBoxImage.Information);
+
+            list.Clear();
         }
     }
 }
