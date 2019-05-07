@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -18,6 +20,7 @@ namespace Cryptographics
             InitializeComponent();
             Init();
         }
+        #region zad 1
         public void Init()
         {
             result1.Text = " ";
@@ -26,7 +29,21 @@ namespace Cryptographics
             result21.Text = " ";
             result22.Text = " ";
 
+
             randomv.Text = " ";
+
+            result31.Text = " ";
+            result32.Text = " ";
+
+            result2c.Text = " ";
+            result32c.Text = " ";
+
+            cryptogram.Text = " ";
+            cryptogramBack.Text = " ";
+
+            cryptogramV.Text = " ";
+            cryptogramVBack.Text = " ";
+
         }
 
         public string[,] CreateTwoDimensionalTable(int rows, int columns)
@@ -203,7 +220,8 @@ namespace Cryptographics
                 MessageBox.Show(text, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-
+        #endregion
+        #region zad 2
         // TASK 2
 
         public int[] InitKey(int[] tab)
@@ -362,6 +380,7 @@ namespace Cryptographics
 
             return result;
         }
+
         private void Decode2_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -385,6 +404,431 @@ namespace Cryptographics
                 MessageBox.Show(text, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+        #endregion
+        #region zad 3 
+        // TASK 3 2b
+
+        private void Code31_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                string KEY = key31.Text;
+                string text = word31.Text;
+
+                char[] Chartext = KEY.Distinct().ToArray();
+                string pomoc = "";
+                Array.Sort(Chartext);
+
+                for (int i = 0; i < Chartext.Length; i++)
+                {
+                    pomoc = pomoc + Chartext[i];
+                }
+
+                int[] keyTable = new int[KEY.Length];
+                int k = 1;
+
+                for (int i = 0; i < pomoc.Length; i++)
+                {
+                    for (int j = 0; j < KEY.Length; j++)
+                    {
+                        if (pomoc[i] == KEY[j])
+                        {
+                            keyTable[j] = k;
+                            k++;
+                        }
+                    }
+                }
+
+                double row = (double)text.Length / KEY.Length;
+                int rows = Convert.ToInt32(Math.Ceiling(row));
+
+                string[,] array = CreateTwoDimensionalTable(rows, KEY.Length);
+
+                array = AddValues(array, text, rows, KEY.Length);
+
+                string result = "";
+
+                for (int i = 0; i < KEY.Length; i++)
+                {
+                    for (int j = 0; j < keyTable.Length; j++)
+                    {
+                        if (i == keyTable[j] - 1)
+                        {
+                            for (int l = 0; l < rows; l++)
+                            {
+                                result = result + array[l, j];
+                            }
+                        }
+                    }
+                }
+
+                result31.Text = result;
+            }
+            catch
+            {
+
+            }
+
+        }
+
+        private void Decode32_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                string text = word32.Text;
+                string key = key32.Text;
+
+                double row = (double)text.Length / key.Length;
+                int number_of_rows = Convert.ToInt32(Math.Ceiling(row));
+
+                int[] keyTable = new int[key.Length];
+
+                char[] Chartext = key.Distinct().ToArray();
+                string pomoc = "";
+                Array.Sort(Chartext);
+
+                for (int i = 0; i < Chartext.Length; i++)
+                {
+                    pomoc = pomoc + Chartext[i];
+                }
+
+                int k = 1;
+
+                for (int i = 0; i < pomoc.Length; i++)
+                {
+                    for (int j = 0; j < key.Length; j++)
+                    {
+                        if (pomoc[i] == key[j])
+                        {
+                            keyTable[j] = k;
+                            k++;
+                        }
+                    }
+                }
+
+                string[,] array = CreateTwoDimensionalTable(number_of_rows, key.Length);
+
+                int disparity = text.Length - (number_of_rows - 1) * key.Length;
+
+                int[] number_of_letters_in_column = new int[key.Length];
+
+                for (int i = 0; i < key.Length; i++)
+                {
+                    if (i < disparity || disparity == 0)
+                    {
+                        number_of_letters_in_column[i] = number_of_rows;
+                    }
+                    else
+                    {
+                        number_of_letters_in_column[i] = number_of_rows - 1;
+                    }
+                }
+
+                // tu zaczyna sie test
+                int group = 1;
+                int position_in_column = 0;
+                int z = 0;
+
+                while(z < text.Length) // przechodzimy przez tekst
+                {
+                    for(int j = 0; j < keyTable.Length; j++) // sprawdzamy w ktorym miejscu jest grupa w kolumnie
+                    {
+                        if(keyTable[j] == group)
+                        {
+                            position_in_column = j;
+                            group++;
+                            break;
+                        }
+                    }
+
+                    for(int l = 0; l < number_of_letters_in_column[position_in_column]; l++)
+                    {
+                        array[l, position_in_column] = text[z].ToString();
+                        z++;
+                    }
+                }
+
+                string result = "";
+
+                for(int i = 0; i < number_of_rows; i++)
+                {
+                    for(int j = 0; j < keyTable.Length; j++)
+                    {
+                        result = result + array[i, j];
+                    }
+                }
+
+                result32.Text = result;
+            }
+            catch
+            {
+
+            }
+
+        }
+
+        //Task 3 2c
+
+        private void Code2c_Click(object sender, RoutedEventArgs e)
+        {
+            string text = word2c.Text;
+            string key = key2c.Text;
+
+            int column_and_row = key.Length;
+
+            int[] keyTable = new int[key.Length];
+
+            char[] Chartext = key.Distinct().ToArray();
+            string pomoc = "";
+            Array.Sort(Chartext);
+
+            for (int i = 0; i < Chartext.Length; i++)
+            {
+                pomoc = pomoc + Chartext[i];
+            }
+
+            int k = 1;
+
+            for (int i = 0; i < pomoc.Length; i++)
+            {
+                for (int j = 0; j < key.Length; j++)
+                {
+                    if (pomoc[i] == key[j])
+                    {
+                        keyTable[j] = k;
+                        k++;
+                    }
+                }
+            }
+
+            string[,] array = CreateTwoDimensionalTable(column_and_row, column_and_row);
+
+            int z = 1;
+            int index = 0;
+            int t = 0;
+            bool end = false;
+            string result = "";
+            int position = 1;
+            int index2 = 0;
+
+            for (int i = 0; i < column_and_row; i++)
+            {
+                for(int j = 0; j < keyTable.Length; j++) // szukamy indeksu
+                {
+                    if(keyTable[j] == z)
+                    {
+                        index = j;
+                        z++;
+                        break;
+                    }
+                }
+
+                for(int j = 0; j <= index; j++)
+                {
+                    if(t >= text.Length)
+                    {
+                        end = true;
+                        break;
+                    }
+                    else
+                    {
+                        array[i, j] = text[t].ToString();
+                        t++;
+                    }
+                }
+
+                if(end == true)
+                {
+                    break;
+                }
+            }
+
+            for(int i = 0; i < column_and_row; i++)
+            {
+                for(int j = 0; j < keyTable.Length; j++) //szukamy indeksu
+                {
+                    if (keyTable[j] == position)
+                    {
+                        index2 = j;
+                    }
+                }
+
+                for(int j = 0; j < column_and_row; j++)
+                {
+                    result = result + array[j, index2];
+                }
+
+                position++;
+            }
+
+            result2c.Text = result;
+
+        }
+
+        private void Decode2c_Click(object sender, RoutedEventArgs e)
+        {
+            string text = word32c.Text;
+            string key = key32c.Text;
+
+            int column_and_row = key.Length;
+
+            int[] keyTable = new int[key.Length];
+
+            char[] Chartext = key.Distinct().ToArray();
+            string pomoc = "";
+            Array.Sort(Chartext);
+
+            for (int i = 0; i < Chartext.Length; i++)
+            {
+                pomoc = pomoc + Chartext[i];
+            }
+
+            int k = 1;
+
+            for (int i = 0; i < pomoc.Length; i++)
+            {
+                for (int j = 0; j < key.Length; j++)
+                {
+                    if (pomoc[i] == key[j])
+                    {
+                        keyTable[j] = k;
+                        k++;
+                    }
+                }
+            }
+
+            int[] number_of_letters_in_each_row = new int[key.Length];
+            int number_of_rows = 0;
+            int z = 1;
+            int sum = 0;
+            bool end_text = false;
+
+            for(int i = 0; i < key.Length; i++) // uzupełniamy nową tablicę
+            {
+                for(int j = 0; j < key.Length; j++) // szukamy indexu
+                {
+                    if(keyTable[j] == z)
+                    {
+                        number_of_letters_in_each_row[i] = j + 1;
+                        sum = sum + j + 1;
+                        z++;
+                        break;
+                    }
+
+                    if(sum >= text.Length)
+                    {
+                        end_text = true;
+                        break;
+                    }
+                }
+
+                if(end_text == true)
+                {
+                    number_of_rows = i + 1;
+                    break;
+                }
+            }
+
+            int licz = 0;
+            bool en = false;
+
+            string[,] array = CreateTwoDimensionalTable(number_of_rows, column_and_row);
+
+            for (int i = 0; i < column_and_row; i++)
+            {
+                for(int j = 0; j < number_of_letters_in_each_row[i]; j++)
+                {
+                    array[i, j] = "a";
+                    licz++;
+
+                    if(licz == text.Length)
+                    {
+                        en = true;
+                        break;
+                    }
+                }
+
+                if(en == true)
+                {
+                    break;
+                }
+            }
+
+            int[] number_of_letters_in_each_column = new int[key.Length];
+
+            int counter = 0;
+            z = 1;
+            int index = 0;
+
+            for(int i = 0; i < key.Length; i++)
+            {
+                counter = 0;
+
+                for(int j = 0; j < key.Length; j++) //szukamy indexu
+                {
+                    if(keyTable[j] == z)
+                    {
+                        index = j;
+                        z++;
+                        break;
+                    }
+                }
+
+                for(int j = 0; j < number_of_rows; j++)
+                {
+                    if(array[j, index] == "a")
+                    {
+                        counter++;
+                    }
+                }
+
+                number_of_letters_in_each_column[i] = counter;
+            }
+
+            z = 1;
+            index = 0;
+            int m = 0;
+
+            for(int i = 0; i < key.Length; i++)
+            {
+                for(int j = 0; j < key.Length; j++) //szukamy indexu
+                {
+                    if(keyTable[j] == z)
+                    {
+                        index = j;
+                        z++;
+                        break;
+                    }
+                }
+
+                for(int j = 0; j < number_of_rows; j++)
+                {
+                    if(array[j, index] == "a")
+                    {
+                        array[j, index] = text[m].ToString();
+                        //MessageBox.Show("wiersz: " + j + " kolumna: " + index + " litera: " + array[j, index]);
+                        m++;
+                    }
+                }
+            }
+
+            string result = "";
+
+            for(int i = 0; i < number_of_rows; i++)
+            {
+                for(int j = 0; j < key.Length; j++)
+                {
+                    if(array[i, j] != null)
+                    {
+                        result = result + array[i, j];
+                    }
+                }
+            }
+
+            result32c.Text = result;
+        }
+        #endregion
+        #region zad 4
 
         //Task 4 
 
@@ -560,7 +1004,8 @@ namespace Cryptographics
             string result = new string(cryptogramArray);
             cryptogramBack.Text = result;
         }
-
+        #endregion
+        #region zad 5
         //TASK 5
         private void VigenereInit(Object sender, RoutedEventArgs e)
         {
@@ -645,6 +1090,7 @@ namespace Cryptographics
             }
             return Results;
         }
+
 
 
 
@@ -765,5 +1211,202 @@ namespace Cryptographics
 
             list.Clear();
         }
+
+        #endregion
+
+        #region CipherText
+        // CipherText
+
+        //każdy string to jeden znak 
+        public string[] binaryFile;
+        public int[] power = new int[4];
+        public int[] resultTableCiphertext;
+        int[] STableResult = new int[4];
+        public string plainTextb;
+
+        private byte XOR (byte p , byte q)
+        {
+            if (p == 0)
+            {
+                if(q == 0) { return 0; }
+                else { return 1; }
+            }
+            else 
+            {
+                if (q == 0) { return 1; }
+                else  { return 0; }
+            }
+        }
+
+        private void GenerateFunction(object sender, RoutedEventArgs e)
+        {
+            wielomian.Text = null;
+            
+            Random rand = new Random();
+            string textY;
+            for (int i = 0; i < 4; i++)
+            {
+                power[i] = rand.Next(0, 2);
+                if (i == 3)
+                {
+                    textY = power[i] + "x^" + i;
+                    wielomian.Text += textY;
+                }
+                else
+                {
+                    textY = power[i] + "x^" + i + " + ";
+                    wielomian.Text += textY;
+                }
+            }
+        }
+
+        private void BtnOpenFile_Click(object sender, RoutedEventArgs e)
+        {
+            byte[] bytes;
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            if (openFileDialog.ShowDialog() == true)
+            {
+                using (FileStream fs = new FileStream(openFileDialog.FileName, FileMode.Open, FileAccess.Read))
+                {
+                    // Create a byte array of file stream length
+                    bytes = System.IO.File.ReadAllBytes(openFileDialog.FileName);
+                    //Read block of bytes from stream into the byte array
+                    fs.Read(bytes, 0, System.Convert.ToInt32(fs.Length));
+                    //Close the File Stream
+                    fs.Close();
+                }
+                binaryFile = new string[bytes.Length];
+                for (int i = 0; i < bytes.Length; i++)
+                {
+                    int b = bytes[i];
+                    binaryFile[i] = Convert.ToString(b, 2);
+                }
+
+                string plaintext = string.Join("", binaryFile);
+                plainTextb = plaintext;
+                plainTextCh.Text = "Plain text: " + plaintext;
+            }
+        }
+
+        private void Ciphertext(object sender, RoutedEventArgs e)
+        {          
+            int resultSizeModel = 0;            
+            int[] STable = new int[4];
+            int index = 0;
+
+            Random rand = new Random();
+            for (int i = 0; i < 4; i++)
+            {
+                STable[i] = rand.Next(0, 2);
+                STableResult[i] = STable[i];
+
+            }
+
+            s0.Text = "S0: " + STable[0].ToString();
+            s1.Text = "S1: " + STable[1].ToString();
+            s2.Text = "S2: " + STable[2].ToString();
+            s3.Text = "S3: " + STable[3].ToString();
+
+            for (int i = 0; i < binaryFile.Length; i++)
+            {
+                int modelSize = binaryFile[i].Length;
+                resultSizeModel += modelSize; 
+            }
+
+            int[] resultTable = new int[resultSizeModel];
+            
+            
+            //operacja 1
+            byte op1 = XOR(Convert.ToByte(STable[0]), Convert.ToByte(STable[3]));
+           
+            for (int i = 0; i < binaryFile.Length; i++)
+            {
+                string model = binaryFile[i];
+                int modelSize = binaryFile[i].Length;
+                int[] modelTable = new int[resultSizeModel];
+                int[] helpTable = new int[modelSize];
+
+
+                for (int j = 0; j < modelSize; j++)
+                {
+                    char[] tab = model.ToArray();
+                    for(int k = 0; k < tab.Length; k++)
+                    {
+                        if(tab[k] =='1') { modelTable[k] = 1; }
+                        else { modelTable[k] = 0; }
+                    }
+
+
+                    byte c = Convert.ToByte(modelTable[j]);
+                    //operacja 2
+                    byte op2 = XOR(c, op1);
+
+                    //operacja 3                    
+                    STable[3] = STable[2];
+                    STable[2] = STable[1];
+                    STable[1] = STable[0];
+                    STable[0] = op2;
+                          
+                    helpTable[j] = STable[3]; 
+                }
+
+             
+                if (i == 0)
+                {
+                    for(int j = 0; j < helpTable.Length; j++)
+                    {
+                        index = j;
+                        resultTable[j] = helpTable[j]; 
+                    }
+                }               
+                else
+                {
+                    for (long j = 0; j < helpTable.Length; j++)
+                    {                       
+                        resultTable[index +1] = helpTable[j];                        
+                        index++;
+                    }
+
+                }
+                string result = string.Join(" ", resultTable);
+                ciphertext.Text = "Wynik: " + result;
+
+                resultTableCiphertext = new int[resultTable.Length];
+                Array.Copy(resultTable, resultTableCiphertext,resultTable.Length);
+                string plaintTextback = string.Join(" ", resultTableCiphertext);
+                plainTextChBack.Text = "Plain Text back: " + plaintTextback;
+            }
+
+
+        }
+
+        private void CipherTextBack(object sender, RoutedEventArgs e)
+        {                       
+           int[] resultTable = new int[plainTextb.Length];
+
+            //operacja 1
+            byte op1 = XOR(Convert.ToByte(STableResult[0]), Convert.ToByte(STableResult[3]));
+            for (int i = 0; i < resultTableCiphertext.Length; i++)
+            { 
+                
+                byte c = Convert.ToByte(resultTableCiphertext[i]);
+                //operacja 2
+                byte op2 = XOR(c, op1);
+
+                //operacja 3                    
+                STableResult[3] = STableResult[2];
+                STableResult[2] = STableResult[1];
+                STableResult[1] = STableResult[0];
+                STableResult[0] = op2;
+
+                resultTable[i] = STableResult[3];
+            }
+            
+            string result = string.Join(" ", plainTextb);
+            ciphertextBack.Text = "Wynik: " + result;
+            }
+        #endregion
+
+
     }
 }
