@@ -285,7 +285,7 @@
                             <RowDefinition Height="5*"/>
                             <RowDefinition Height="5*"/>
                         </Grid.RowDefinitions>
-                        <Label VerticalAlignment="Center" HorizontalAlignment="Center">Podaj potęgi po przecinku:</Label>
+                        <Label VerticalAlignment="Center" HorizontalAlignment="Center">Podaj potęgi:</Label>
                         <TextBox Name="degrees" Grid.Column="1" Margin="25"></TextBox>
                         <Button Grid.Row="1" Grid.ColumnSpan="2" Margin="20" Click="SSCclick">Wybierz plik</Button>
                     </Grid>
