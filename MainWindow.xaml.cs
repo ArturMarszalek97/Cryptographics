@@ -1262,45 +1262,112 @@ namespace Cryptographics
         #region SSC
         private void SSCclick(object sender, RoutedEventArgs e)
         {
+            BinaryFile.Text = "";
+            LFSR_Textbox.Text = "";
+            resulto.Text = "";
+
             OpenFile(out string location);
             string file_location = location;
 
-            string outer = "";
+            byte[] _bytes = File.ReadAllBytes(file_location);
 
-            byte[] bytes = File.ReadAllBytes(file_location);
+            string[] file_as_binary_array = _bytes.Select(x => Convert.ToString(x, 2).PadLeft(8, '0')).ToArray();
+            int file_length = file_as_binary_array.Length * 8;
 
-            string[] binary_array = bytes.Select(x => Convert.ToString(x, 2).PadLeft(8, '0')).ToArray();
-            int file_length = binary_array.Length * 8;
-
-            for(int i = 0; i < binary_array.Length; i++)
+            for(int i = 0; i < file_as_binary_array.Length; i++)
             {
-                BinaryFile.Text += binary_array[i];
+                BinaryFile.Text += file_as_binary_array[i];
             }
 
-            LFSR(degrees.Text, ref outer, file_length);
-            LFSR_Textbox.Text = outer;
-            var data = outer;
+            //LFSR(degrees.Text, ref outer, file_length);
 
-            string[] data_in_string = data.Select(x => Convert.ToString(x, 2).PadLeft(8, '0')).ToArray();
+            //start test
+
+            //start lfsr
+
+            int[] LFSR = new int[file_length];
+            int[] binary_array_as_int = new int[file_length];
+
+            List<Byte> degrees = new List<byte>();
+
+            foreach (char x in this.degrees.Text)
+            {
+                degrees.Add(byte.Parse(x.ToString()));
+            }
+
+            Random random = new Random();
+
+            var number_of_bits = degrees.Max();
+
+            List<byte> random_bits = new List<byte>();
+
+            for (int i = 0; i <= number_of_bits; i++)
+            {
+                random_bits.Add((byte)random.Next(2));
+            }
 
             int index = 0;
-            int[] binary_array_in_int = new int[file_length];
-            int[] data_in_int = new int[file_length];
-
-            for(int i = 0; i < binary_array.Length; i++)
+            int k = file_length;
+            do
             {
-                for(int j = 0; j < 8; j++)
+                byte result = 0;
+
+                foreach (var y in degrees)
                 {
-                    binary_array_in_int[index] = int.Parse(binary_array[i][j].ToString());
-                    data_in_int[index] = int.Parse(data_in_string[i][j].ToString());
+                    result += random_bits[y];
+                }
+
+                result = (byte)(result % 2);
+                LFSR[index] = random_bits[number_of_bits];
+                index++;
+                LFSR_Textbox.Text += random_bits[number_of_bits];
+                random_bits.RemoveAt(number_of_bits);
+                random_bits.Insert(1, result);
+                k--;
+
+            } while (k > 0);
+
+            // the end lfsr
+
+            index = 0;
+            for (int i = 0; i < file_as_binary_array.Length; i++)
+            {
+                for (int j = 0; j < 8; j++)
+                {
+                    binary_array_as_int[index] = int.Parse(file_as_binary_array[i][j].ToString());
                     index++;
                 }
             }
 
-            for(int i = 0; i < file_length; i++)
+            for (int i = 0; i < file_length; i++)
             {
-                resulto.Text += data_in_int[i] ^ binary_array_in_int[i];
+                resulto.Text += LFSR[i] ^ binary_array_as_int[i];
             }
+
+            //end test
+            //LFSR_Textbox.Text = outer;
+            //var data = outer;
+
+            //string[] data_in_string = data.Select(x => Convert.ToString(x, 2).PadLeft(8, '0')).ToArray();
+
+            //int index = 0;
+            //int[] binary_array_in_int = new int[file_length];
+            //int[] data_in_int = new int[file_length];
+
+            //for(int i = 0; i < binary_array.Length; i++)
+            //{
+            //    for(int j = 0; j < 8; j++)
+            //    {
+            //        binary_array_in_int[index] = int.Parse(binary_array[i][j].ToString());
+            //        data_in_int[index] = int.Parse(data_in_string[i][j].ToString());
+            //        index++;
+            //    }
+            //}
+
+            //for(int i = 0; i < file_length; i++)
+            //{
+            //    resulto.Text += data_in_int[i] ^ binary_array_in_int[i];
+            //}
         }
 
         public void OpenFile(out string locationTextBox)
@@ -1308,7 +1375,7 @@ namespace Cryptographics
             locationTextBox = "";
             OpenFileDialog fileDialog = new OpenFileDialog();
             fileDialog.Multiselect = false;
-            fileDialog.Filter = "JPEG Files|*.jpg|Text Files|*.txt|All Files|*.*";
+            fileDialog.Filter = "Text Files|*.txt|JPEG Files|*.jpg|All Files|*.*";
             fileDialog.DefaultExt = ".txt";
             Nullable<bool> dialogOk = fileDialog.ShowDialog();
 
@@ -1331,7 +1398,6 @@ namespace Cryptographics
             string ciphered_text = resulto.Text;
             string lfsr_algorythm = LFSR_Textbox.Text;
             sscdecipher.Text = "";
-            MessageBox.Show((lfsr_algorythm[0] ^ ciphered_text[0]).ToString() + lfsr_algorythm[0] + ciphered_text[1]);
 
             for(int i = 0; i < lfsr_algorythm.Length; i++)
             {
